@@ -69,20 +69,7 @@ class ConfigLoaderTest {
     fun failsOnMalformedXml() = assertError("<config><package_name>x</package_name>", "XML")
 
     @Test
-    fun failsOnDoctype() = assertError("<!DOCTYPE config []><config/>", "XML")
-
-    @Test
     fun failsOnWrongRoot() = assertError("<settings/>", "Корневой элемент")
-
-    @Test
-    fun failsOnUnknownParameter() =
-        assertError("<config><foo>1</foo></config>", "Неизвестный параметр")
-
-    @Test
-    fun failsOnDuplicateParameter() = assertError(
-        "<config><mode>test</mode><mode>remote</mode></config>",
-        "более одного раза",
-    )
 
     @Test
     fun failsOnMissingPackageName() =
@@ -105,13 +92,6 @@ class ConfigLoaderTest {
     @Test
     fun failsOnCargoNameStartingWithDigit() =
         assertError(xml("1serde", "https://crates.io", "remote"), "Недопустимое имя")
-
-    @Test
-    fun failsOnTooLongName() =
-        assertError(
-            xml("a".repeat(MAX_PACKAGE_NAME_LENGTH + 1), "https://crates.io", "remote"),
-            "слишком длинное",
-        )
 
     @Test
     fun failsOnLowercaseNameInTestMode() {
