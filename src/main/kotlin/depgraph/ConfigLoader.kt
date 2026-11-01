@@ -1,12 +1,17 @@
 package depgraph
 
 import java.io.File
-import java.lang.reflect.Parameter
 
 /** Загружает и проверяет конфигурацию приложения из XML-файла. */
 object ConfigLoader {
+
+    /**
+     * Читает конфигурацию из файла [path].
+     *
+     * @throws ConfigException если файл недоступен или значения параметров неверны
+     */
     fun load(path: String): Config {
-        ParameterValidator.readableFile(path,"конфигурация")
+        ParameterValidator.readableFile(path, "конфигурации")
         val values = XmlConfigReader.read(File(path))
         val mode = ParameterValidator.mode(required(values, ConfigKeys.MODE))
         val packageName = ParameterValidator.packageName(
@@ -20,7 +25,7 @@ object ConfigLoader {
         return Config(packageName, repository, mode)
     }
 
-    private fun required(values: Map<String, String>, key: String): String{
+    private fun required(values: Map<String, String>, key: String): String {
         val value = values[key] ?: throw ConfigException("Не задан обязательный параметр <$key>")
         if (value.isEmpty()) throw ConfigException("Параметр <$key> не может быть пустым")
         return value

@@ -11,13 +11,21 @@ const val EXIT_USAGE_ERROR = 2
 private const val MAX_ARGUMENTS = 1
 private val HELP_FLAGS = setOf("-h", "--help")
 
-fun main(args:Array<String>) {
+/** Точка входа: запускает [runApp] и завершает процесс с её кодом возврата. */
+fun main(args: Array<String>) {
     val exitCode = runApp(args, System.out, System.err)
-    if (exitCode != 0) exitProcess(exitCode)
+    if (exitCode != EXIT_OK) exitProcess(exitCode)
 }
 
-fun runApp(args:Array<String>, out: PrintStream, err:PrintStream): Int{
-    if(args.any {it in HELP_FLAGS}){
+/**
+ * Выполняет приложение и возвращает код возврата.
+ *
+ * @param args аргументы командной строки (необязательный путь к config.xml)
+ * @param out поток обычного вывода
+ * @param err поток вывода ошибок
+ */
+fun runApp(args: Array<String>, out: PrintStream, err: PrintStream): Int {
+    if (args.any { it in HELP_FLAGS }) {
         printUsage(out)
         return EXIT_OK
     }
@@ -26,11 +34,11 @@ fun runApp(args:Array<String>, out: PrintStream, err:PrintStream): Int{
         printUsage(err)
         return EXIT_USAGE_ERROR
     }
-    return try{
+    return try {
         val config = ConfigLoader.load(args.firstOrNull() ?: DEFAULT_CONFIG_PATH)
         config.toKeyValue().forEach { (key, value) -> out.println("$key: $value") }
         EXIT_OK
-    } catch(e:ConfigException){
+    } catch (e: ConfigException) {
         err.println("Ошибка конфигурации: ${e.message}")
         EXIT_CONFIG_ERROR
     }
