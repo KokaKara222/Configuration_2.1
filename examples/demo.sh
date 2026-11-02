@@ -6,7 +6,7 @@ APP=build/install/Configuration_2/bin/Configuration_2
 D=$(mktemp -d)
 echo "A -> B" > "$D/repo.txt"
 
-cfg() {
+cfg() {9
   printf '<config><package_name>%s</package_name><repository>%s</repository><mode>%s</mode></config>' \
     "$2" "$3" "$4" > "$D/$1.xml"
 }
