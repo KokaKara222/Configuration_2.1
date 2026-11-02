@@ -2,6 +2,6 @@
 set -eu
 cd "$(dirname "$0")"
 if [ "$#" -eq 0 ]; then
-    exec ./gradlew --quiet run
+    exec gradle --quiet run
 fi
-exec ./gradlew --quiet run --args="$*"
+exec gradle --quiet run --args="$*"

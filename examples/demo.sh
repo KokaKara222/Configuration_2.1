@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Демонстрация обработки ошибок (этап 1, пункт 4)
 cd "$(dirname "$0")/.."
-./gradlew -q installDist
+gradle -q installDist
 APP=build/install/Configuration_2/bin/Configuration_2
 D=$(mktemp -d)
 echo "A -> B" > "$D/repo.txt"
